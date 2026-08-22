@@ -1,0 +1,15 @@
+import { useState } from 'react'
+import './App.css'
+import Home from './pages/Home'
+import MainPage from './pages/MainPage'
+
+function App() {
+
+  return (
+    <>
+      <MainPage/>
+    </>
+  )
+}
+
+export default App
