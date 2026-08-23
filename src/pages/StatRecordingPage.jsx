@@ -1,9 +1,12 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
+import { useUserContext } from '../contexts/UserContext';
 
 function StatRecordingPage({run, onSave, onCancel}){
-    const [currentRun, setRun] = useState();
+    const {addRun, formatTimeString} = useUserContext();
+    const [currentRun, setCurrentRun] = useState({})
     const [time, setTime] = useState('000000');
     const [distance, setDistance] = useState(0);
+    const [pace, setPace] = useState(0); // in seconds
 
     const onTimeChange = (e) => {
         const raw = e.target.value.replace(/\D/g, '');
@@ -18,13 +21,23 @@ function StatRecordingPage({run, onSave, onCancel}){
     const hh = formatted.slice(0, 2);
     const mm = formatted.slice(2, 4);
     const ss = formatted.slice(4, 6);
-    
-    function getAverageSpeed(){
-        let rawTime = formatTimeToSeconds(time)
-    
-        if(rawTime === 0) return 0
-        return (distance * 1000) / rawTime * 3.6
+
+    function getPace(){
+        let rawTime = formatTimeToSeconds(time);
+        if(rawTime === 0 || distance === 0) return 0
+        return Math.floor(rawTime / distance);
     }
+    function getPaceString() {
+        
+        const p = getPace()
+        // if (rawTime === 0 || distance === 0) return '0:00:00';
+        return formatTimeString(p)
+    }
+
+    useEffect(() => {
+        console.log(getPace())
+        setPace(getPace())
+    }, [time, distance])
 
     function formatTimeToSeconds(rawDigits){
         // Formats a given integer into seconds value
@@ -37,6 +50,21 @@ function StatRecordingPage({run, onSave, onCancel}){
         return parseInt(ss) + (parseInt(mm) * 60) + (parseInt(hh) * 3600)
 
     }
+
+    function handleSave(){
+        const now = new Date();
+        const newRun = {
+            id: crypto.randomUUID(),
+            date: now, 
+            time: time, 
+            distance: distance,
+            pace: pace,
+        }
+        addRun(newRun)
+        onSave();
+    }
+
+    
     return (
         <>
         <div className="stat-recording">
@@ -58,10 +86,13 @@ function StatRecordingPage({run, onSave, onCancel}){
             <h4>Elevation Gain (°)</h4>
             <input type="number" min="0" max="90" step="1" placeholder="0"/>
 
-            <h4>Average Speed (km/hr)</h4>
-            <input disabled value={`${getAverageSpeed().toFixed(2)}`}/>
+            <h4>Pace (min/km)</h4>
+            <input 
+            disabled
+            value={`${getPaceString()}`}
+            />
 
-            <button onClick={() => {onSave()}}>Save</button>
+            <button onClick={handleSave}>Save</button>
             <button onClick={() => {onCancel()}}>Cancel</button>
         </div>
         </>
