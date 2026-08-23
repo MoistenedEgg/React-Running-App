@@ -1,0 +1,10 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.btn-add-run{
+    font-size: x-large;
+    width: 15rem;
+    height: 5rem;
+}

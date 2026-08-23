@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import { useUserContext } from '../contexts/UserContext';
+import '../css/StatRecordingPage.css'
 
 function StatRecordingPage({run, onSave, onCancel}){
     const {addRun, formatTimeString} = useUserContext();
@@ -69,31 +70,46 @@ function StatRecordingPage({run, onSave, onCancel}){
         <>
         <div className="stat-recording">
             <h2>Record your Run</h2>
-            <h4>Distance(km)</h4>
-            <input type="number" min="0" step="0.01" value={distance} onChange={onDistanceChange} inputMode="numeric" placeholder="Distance in km"/>
+            <div className="main-stats-container">
+                <div className="stat-container">
+                    <h4>Distance(km)</h4>
+                    <input type="number" min="0" step="0.01" value={distance} onChange={onDistanceChange} inputMode="numeric" placeholder="Distance in km"/>
+                </div>
+                
+                <div className="stat-container">
+                    <h4>Time</h4>
+                    <input value={`${hh}:${mm}:${ss}`} 
+                    type="text" 
+                    inputMode="numeric" 
+                    placeholder="00:00:00"
+                    onChange={onTimeChange}
+                    />
+                </div>
+            </div>
+
+            <div className="stat-container">
+                <h4>Pace (min/km)</h4>
+                <input 
+                disabled
+                className = "input-readonly"
+                value={`${getPaceString()}`}
+                />
+            </div>
             
-            <h4>Time</h4>
-            <input value={`${hh}:${mm}:${ss}`} 
-            type="text" 
-            inputMode="numeric" 
-            placeholder="00:00:00"
-            onChange={onTimeChange}
-            />
-            
-            <h4>Calories burnt (kcal)</h4>
-            <input type="number" min="0" max="10000" step="1" placeholder="0"/>
+            <div className="stat-container">
+                <h4>Calories burnt (kcal)</h4>
+                <input type="number" min="0" max="10000" step="1" placeholder="0"/>
+            </div>
 
-            <h4>Elevation Gain (°)</h4>
-            <input type="number" min="0" max="90" step="1" placeholder="0"/>
+            <div className="stat-container">
+                <h4>Elevation Gain (°)</h4>
+                <input type="number" min="0" max="90" step="1" placeholder="0"/>
+            </div>
 
-            <h4>Pace (min/km)</h4>
-            <input 
-            disabled
-            value={`${getPaceString()}`}
-            />
-
-            <button onClick={handleSave}>Save</button>
-            <button onClick={() => {onCancel()}}>Cancel</button>
+            <div class="stat-button-container">
+                <button className="btn-green btn-confirm btn-cancel" onClick={() => {onCancel()}}>Cancel</button>
+                <button className="btn-green btn-confirm" onClick={handleSave}>Save</button>
+            </div>
         </div>
         </>
     )

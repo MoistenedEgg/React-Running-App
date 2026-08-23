@@ -16,7 +16,7 @@ function ActivityPage(){
 
     return (
         <>
-        <div className="home">
+        <div className="activity">
             <h1>Stats and trends</h1>
 
             <div className="activity-graph">

@@ -1,0 +1,49 @@
+:root {
+  /* Colors */
+  --color-primary: #74a722;
+  --color-primary-muted: #a8d363;
+  --color-secondary: #9cbb7b;
+  --color-background: #181818;
+  --color-background-lighter: #414141;
+  --color-surface: #f8f9fb;
+  --color-text: #fbfbfd;
+  --color-text-muted: #707590;
+  --color-border: #e2e4ea;
+
+  /* Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+
+  /* Typography */
+  --font-body: system-ui, sans-serif;
+  --font-size-base: 1rem;
+
+  /* Misc */
+  --radius: 0.5rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+}
+
+button {
+    color: var(--color-text);
+    background: var(--color-background);
+    border: none;
+    cursor: pointer;
+}
+
+input {
+  background: var(--color-background-lighter);
+  border: none;
+  color: var(--color-text);
+}

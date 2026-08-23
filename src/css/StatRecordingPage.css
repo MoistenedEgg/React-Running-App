@@ -1,0 +1,63 @@
+.stat-recording {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-green{
+    background-color: var(--color-primary);
+    border-radius: 2rem;
+    border-color: rgba(255, 255, 255, 0);
+    gap: 15px;
+    padding:5px;
+
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-green:hover{
+    background-color: var(--color-primary-muted);
+
+    border-color: rgba(255, 255, 255, 255);
+}
+
+.btn-confirm{
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+}
+.btn-cancel{
+    background-color: var(--color-background-lighter);
+}
+
+.btn-cancel:hover{
+    background-color: rgb(146, 62, 62);
+}
+
+.stat-button-container {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.main-stats-container{
+    display:flex;
+    gap: 2rem;
+}
+.stat-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.stat-container input{
+    border-radius: 5rem;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    width: 8rem;
+
+    text-align: right;
+}
+
+.stat-container input.input-readonly{
+    background-color: var(--color-background-lighter);
+    filter: brightness(0.7);
+    text-align: center;
+}

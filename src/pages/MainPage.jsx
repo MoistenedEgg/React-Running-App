@@ -3,22 +3,39 @@ import Home from './Home'
 import ActivityPage from './ActivityPage'
 import GoalsPage from './GoalsPage'
 import ProfilePage from './ProfilePage'
+import '../css/MainPage.css'
+import { ChartColumn, House, UserPen, Goal} from 'lucide-react'
 
 // This page is the main part, responsible for display all other pages using a navbar at the bottom of the screen
 function MainPage(){
     
     const [page, setPage] = useState("HOME");
-
+    console.log(page);
     return (
-        <>
-        {GetPage(page)}
+        <main>
+            <div className="page-container">
+
+                {GetPage(page)}
+            </div>
         <div className="navbar">
-            <button onClick={() => {setPage("ACTIVITY")}}>Acivity</button>  
-            <button onClick={() => {setPage("HOME")}}>Home</button>  
-            <button onClick={() => {setPage("GOALS")}}>Goals</button>  
-            <button onClick={() => {setPage("PROFILE")}}>Profile</button>  
+            <button className={`page-button ${page === "ACTIVITY" ? "active" : ""}`} onClick={() => {setPage("ACTIVITY")}}>
+                <ChartColumn className="page-button-symbol"/>    
+                <span className={`page-button-caption ${page === "ACTIVITY" ? "active" : ""}`}>Activity</span>    
+            </button>  
+            <button className={`page-button ${page === "HOME" ? "active" : ""}`} onClick={() => {setPage("HOME")}}>
+                <House className="page-button-symbol"/>    
+                <span className={`page-button-caption ${page === "HOME" ? "active" : ""}`}>Home</span>  
+            </button>  
+            <button className={`page-button ${page === "GOALS" ? "active" : ""}`} onClick={() => {setPage("GOALS")}}>
+                <Goal className="page-button-symbol"/>    
+                <span className={`page-button-caption ${page === "GOALS" ? "active" : ""}`}>Goals</span>  
+            </button>  
+            <button className={`page-button ${page === "PROFILE" ? "active" : ""}`} onClick={() => {setPage("PROFILE")}}>
+                <UserPen className="page-button-symbol"/>    
+                <span className={`page-button-caption ${page === "PROFILE" ? "active" : ""}`}>Profile</span>  
+            </button>  
         </div>
-        </>
+        </main>
     )
 }
 
