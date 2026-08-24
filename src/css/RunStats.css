@@ -26,8 +26,7 @@
 }
 
 .run-time{
-    padding: 0.2rem 1rem;
-    margin: 0.5rem;
+    
     transition:  color 0.2s;
 }
 .main-stats{
@@ -62,4 +61,35 @@
 
 .text-green{
     color: var(--color-primary-muted)
+}
+
+.run-header{
+    padding: 0.2rem 1rem;
+    margin: 0.5rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    gap: 0.5rem;
+}
+
+.run-option-buttons{
+    display: flex;
+    margin-left: auto;
+    gap: 0.5rem;
+    opacity: 0;
+
+    transition: opacity 0.2s;
+}
+
+.run-stats:hover .run-option-buttons{
+    opacity: 1;
+}
+
+.btn-run-option{
+    background: var(--color-background);
+    border-radius: 1rem;
+    height: 80%;
+    padding: 0.5rem;
 }

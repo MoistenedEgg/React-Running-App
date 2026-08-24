@@ -29,7 +29,15 @@ export const UserProvider = ({children}) => {
         setRuns(prev => 
             [...prev].sort((r1, r2) => new Date(r2.date).getTime() - new Date(r1.date).getTime())
         )
-}
+    }
+
+    // Compile a list of all runs from within a date range
+    const filterRunsByDate = (startDate, endDate = new Date()) => {
+        return runs.filter(run => {
+            const date = new Date(run.date);
+            return date >= startDate && date <= endDate
+        })
+    }
     const formatTimeString = (seconds) => {
         if(isNaN(seconds) || !Number.isFinite(seconds)){
             return "0:00"
@@ -70,7 +78,8 @@ export const UserProvider = ({children}) => {
         addRun,
         removeRun,
         formatTimeString,
-        sortRunsByDate
+        sortRunsByDate,
+        filterRunsByDate
     }
     return <UserContext.Provider value = {value}>{children}</UserContext.Provider>
 }

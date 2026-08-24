@@ -1,12 +1,9 @@
 import { useUserContext } from "../contexts/UserContext"
 import '../css/RunStats.css'
+import { Trash2, Pencil} from 'lucide-react';
 
 function RunStats({run}){
     const {formatTimeString, sortRunsByDate} = useUserContext()
-
-
-    
-
     function getOrdinal(day) {
         if (day > 3 && day < 21) return 'th'; // 11th-13th are all "th"
         switch (day % 10) {
@@ -37,10 +34,23 @@ function RunStats({run}){
     }
     return (
         <div className="run-stats">
-            <div className="run-time">
-                <h3>{formatDate(new Date(run.date))}</h3>
-                <span style={{color: 'gray'}}>{formatDateTime(new Date(run.date))}</span>
+            <div className="run-header">
+                <div className="run-time">
+                    <h3>{formatDate(new Date(run.date))}</h3>
+                    <span style={{color: 'gray'}}>{formatDateTime(new Date(run.date))}</span>
+                </div>
+
+                <div className="run-option-buttons">
+                    <button className="btn-green btn-run-option">
+                        <Pencil/>
+                    </button>
+
+                    <button className="btn-cancel btn-run-option ">
+                        <Trash2/>
+                    </button>
+                </div>
             </div>
+            
 
             <div className="main-stats">
 

@@ -1,0 +1,11 @@
+.activity {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.activity-graph{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
