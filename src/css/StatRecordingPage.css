@@ -61,3 +61,11 @@
     filter: brightness(0.7);
     text-align: center;
 }
+
+.input-alert{
+    border: 2px solid rgb(146, 62, 62)
+}
+
+.text-red {
+    color: rgb(255, 101, 101)
+}

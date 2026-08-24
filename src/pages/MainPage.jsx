@@ -10,7 +10,6 @@ import { ChartColumn, House, UserPen, Goal} from 'lucide-react'
 function MainPage(){
     
     const [page, setPage] = useState("HOME");
-    console.log(page);
     return (
         <main>
             <div className="page-container">

@@ -4,7 +4,8 @@
   --color-primary-muted: #a8d363;
   --color-secondary: #9cbb7b;
   --color-background: #181818;
-  --color-background-lighter: #414141;
+  --color-background-slightly-lighter: #222222;
+  --color-background-lighter: #2b2b2b;
   --color-surface: #f8f9fb;
   --color-text: #fbfbfd;
   --color-text-muted: #707590;
@@ -38,6 +39,8 @@ body {
 button {
     color: var(--color-text);
     background: var(--color-background);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
     border: none;
     cursor: pointer;
 }
@@ -46,4 +49,6 @@ input {
   background: var(--color-background-lighter);
   border: none;
   color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
 }

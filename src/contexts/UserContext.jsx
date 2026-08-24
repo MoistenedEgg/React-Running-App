@@ -4,16 +4,16 @@ const UserContext = createContext();
 
 export const useUserContext = () => useContext(UserContext);
 export const UserProvider = ({children}) => {
-    const [runs, setRuns] = useState([])
+    const [runs, setRuns] = useState(() => {
+        try {
+            const stored = localStorage.getItem("runs");
+            return stored ? JSON.parse(stored) : [];
+        } catch {
+            return []
+        }
+    })
     // Run Properties: id, date, time, distance, calories, elevation gain, average speed, notes
 
-    useEffect(() => {
-        const storedRuns = localStorage.getItem("runs");
-
-        if(storedRuns){
-            setRuns(JSON.parse(storedRuns))
-        }
-    }, [])
     useEffect(() => {
         localStorage.setItem("runs", JSON.stringify(runs))
     }, [runs])
@@ -25,8 +25,15 @@ export const UserProvider = ({children}) => {
         setRuns(prev => prev.filter(run => run.id !== runId))
     }
 
+    const sortRunsByDate = () => {
+        setRuns(prev => 
+            [...prev].sort((r1, r2) => new Date(r2.date).getTime() - new Date(r1.date).getTime())
+        )
+}
     const formatTimeString = (seconds) => {
-
+        if(isNaN(seconds) || !Number.isFinite(seconds)){
+            return "0:00"
+        }
         let mins = 0;
         let hrs = 0;
 
@@ -62,7 +69,8 @@ export const UserProvider = ({children}) => {
         runs,
         addRun,
         removeRun,
-        formatTimeString
+        formatTimeString,
+        sortRunsByDate
     }
     return <UserContext.Provider value = {value}>{children}</UserContext.Provider>
 }
