@@ -3,7 +3,7 @@ import '../css/RunStats.css'
 import { Trash2, Pencil} from 'lucide-react';
 
 function RunStats({run}){
-    const {formatTimeString, sortRunsByDate} = useUserContext()
+    const {runs, removeRun, formatTimeString, sortRunsByDate} = useUserContext()
     function getOrdinal(day) {
         if (day > 3 && day < 21) return 'th'; // 11th-13th are all "th"
         switch (day % 10) {
@@ -32,6 +32,11 @@ function RunStats({run}){
         }
         return `${hour}:${minute.toString().padStart(2, '0')}${suffix}`
     }
+
+    function handleDelete(){
+        removeRun(run.id)
+        sortRunsByDate()
+    }
     return (
         <div className="run-stats">
             <div className="run-header">
@@ -45,7 +50,7 @@ function RunStats({run}){
                         <Pencil/>
                     </button>
 
-                    <button className="btn-cancel btn-run-option ">
+                    <button className="btn-cancel btn-run-option " onClick={handleDelete}>
                         <Trash2/>
                     </button>
                 </div>

@@ -3,12 +3,12 @@ import {useState, useEffect} from 'react'
 import { useUserContext } from '../contexts/UserContext';
 import RunStats from '../components/RunStats';
 import '../css/ActivityPage.css'
-import { Clock, Footprints } from 'lucide-react';
+import { Clock, Footprints, Timer} from 'lucide-react';
 
 function ActivityPage(){
     const {runs, filterRunsByDate, formatTimeString} = useUserContext()
     const [graphRange, setGraphRange] = useState("CURRENT_WEEK")
-    const [graphMetric, setGraphMetric] = useState("distance")
+    const [graphMetric, setGraphMetric] = useState("Distance")
     const [graphData, setGraphData] = useState([
         { name: 'Sun', distance: 2600 },
         { name: 'Mon', distance: 400 },
@@ -82,13 +82,14 @@ function ActivityPage(){
         console.log(filtered)
         
         // Sum up stats for each day
-        const daySummed = Array(graphSize).fill({distance: 0, time: 0, pace: 0});
+        const daySummed = Array(graphSize).fill({distance: 0, time: 0, pace: Infinity});
         filtered.forEach(run => {
             const runDate = new Date(run.date);
+            const prev = daySummed[runDate.getDay()]
             daySummed[runDate.getDay()] = {
-                distance: daySummed[runDate.getDay()].distance + run.distance,
-                time: daySummed[runDate.getDay()].time + run.time,
-                pace: daySummed[runDate.getDay()].pace + run.pace
+                distance: prev.distance + run.distance,
+                time: prev.time + run.time,
+                pace: run.pace < prev.pace ? run.pace : prev.pace
             };
         }, [])
 
@@ -109,11 +110,11 @@ function ActivityPage(){
 
     function formatGraphMetricLabel(metric){
         switch(metric){
-            case "distance":
+            case "Distance":
                 return "Distance (km)"
-            case "time":
+            case "Time":
                 return "Time (min)"
-            case "pace":
+            case "Pace":
                 return "Pace (min/km)"
             default:
                 return ""
@@ -123,19 +124,23 @@ function ActivityPage(){
     return (
         <>
         <div className="activity">
-            <h1>Stats and trends</h1>
+            <h1>Activity</h1>
         
             <div className="activity-graph-container">
                 <h3>{`Current Range: ${formatDate(new Date(graphStart))} - ${formatDate(new Date(graphEnd))}`}</h3>
 
                 <div className="metric-selector">
-                    <button className={`btn-tab btn-metric ${graphMetric === "distance" ? "active" : ""}`} onClick={() => setGraphMetric("distance")}>
+                    <button className={`btn-tab btn-metric ${graphMetric === "Distance" ? "active" : ""}`} onClick={() => setGraphMetric("Distance")}>
                         Distance
                         <Footprints className="inline-logo"/>
                     </button>
-                    <button className={`btn-tab btn-metric ${graphMetric === "time" ? "active" : ""}`} onClick={() => setGraphMetric("time")}>
+                    <button className={`btn-tab btn-metric ${graphMetric === "Time" ? "active" : ""}`} onClick={() => setGraphMetric("Time")}>
                         Time
                         <Clock className="inline-logo"/>
+                    </button>
+                    <button className={`btn-tab btn-metric ${graphMetric === "Pace" ? "active" : ""}`} onClick={() => setGraphMetric("Pace")}>
+                        Best Pace
+                        <Timer className="inline-logo"/>
                     </button>
                 </div>
 
@@ -144,17 +149,18 @@ function ActivityPage(){
                     <XAxis dataKey="name"/>
                     <YAxis 
                     label={{value: formatGraphMetricLabel(graphMetric), angle: -90, position: "insideLeft"}}
-                    tickFormatter={(value) => graphMetric === 'time' ? formatTimeString(value) : value}/>
+                    tickFormatter={(value) => graphMetric === 'Time' || graphMetric === 'Pace' ? formatTimeString(value) : value}/>
                     <Tooltip 
                         isAnimationActive={false}
                         cursor={{ fill: "rgba(0,0,0,0.25)"}}
+                        formatter={(value) => graphMetric === 'Time' || graphMetric === 'Pace' ? formatTimeString(value) : value}
                         contentStyle={{ borderRadius: 8, 
                                         border: "none", 
                                         boxShadow: "0 2px 8px rgba(0,0,0,0.15)", 
                                         background: "var(--color-background-lighter)",
                                         transition: "all 0.3s ease-in-out" }}
                     />
-                    <Bar dataKey={graphMetric} fill="#b0e45c" 
+                    <Bar dataKey={graphMetric.toLowerCase()} fill="var(--color-primary)" 
                     isAnimationActive={animate}
                     OnAnimationEnd = {() => {
                         hasAnimated.current = true
