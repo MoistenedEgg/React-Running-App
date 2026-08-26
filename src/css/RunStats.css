@@ -1,7 +1,7 @@
 .run-stats{
     background-color: var(--color-background-slightly-lighter);
     border-radius: 2rem;
-    border: 1px groove var(--color-background-lighter);;
+    border: 1px groove var(--color-background-lighter);
 
     font-size: 1.1rem;
     padding: 0.2rem 1rem;
