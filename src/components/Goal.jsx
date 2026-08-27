@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import {useUserContext} from "../contexts/UserContext";
+import {Trash2} from 'lucide-react'
 import '../css/Goal.css'
 
 import {MountainSnow, Timer, Clock, Sparkle} from 'lucide-react';
@@ -69,6 +70,8 @@ function Goal({goal, isEditing, onConfirm, onCancel}){
         onConfirm();
     }
 
+    
+
     function formatValue(value){
         if(targetMetric === "Distance"){
             return parseFloat(value).toFixed(2)
@@ -108,15 +111,22 @@ function Goal({goal, isEditing, onConfirm, onCancel}){
             removeGoal(goal.id);
         }
     }
+
+    function handleDelete(){
+        removeGoal(goal.id)
+    }
+
     return (
         <>
             <div 
             className={`goal ${isEditing ? "goal-editing" : ""} ${completed ? "goal-completed" : ""}`} 
             onClick={handleCompleteGoal}>
-                {completed && 
+                {completed === true ? ( 
                 <div className="goal-complete-overlay">
                     <span>Click anywhere to remove</span>
-                </div>}
+                </div>) : (
+                    <></>
+                )}
                 {isEditing ? (
                     <div className="goal-edit-form">
                         <h2>Add new Goal</h2>
@@ -187,6 +197,9 @@ function Goal({goal, isEditing, onConfirm, onCancel}){
                                 <h4 className="goal-target-date">{`Target Date: ${formatDate(new Date(goal.endDate))}`}</h4>
                                 <span className="goal-start-date">{`Started on: ${formatDate(new Date(goal.startDate))}`}</span>
                             </div>
+                            <button className="goal-delete btn-cancel btn-run-option " onClick={handleDelete}>
+                                <Trash2/>
+                            </button>
                         </div>
                         <div className="goal-stat-container">
                             <span className="big-num">{formatValue(currentVal)}</span>

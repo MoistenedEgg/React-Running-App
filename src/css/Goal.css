@@ -52,10 +52,14 @@
 
     padding: 1rem;
 }
+
+.goal-delete{
+    margin-left: 1rem;
+}
+
 .goal:hover .goal-complete-overlay {
   opacity: 1;
 }
-
 .goal-editing{
     border-color: var(--color-primary);
 }

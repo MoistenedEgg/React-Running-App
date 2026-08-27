@@ -185,7 +185,7 @@ function ActivityPage(){
 
             <div className="run-log">
                 <h3>Recent Runs</h3>
-                {runs.map(run => <RunStats run={run} key={run.id}/>)}
+                {runs.slice(0, 20).map(run => <RunStats run={run} key={run.id}/>)}
             </div>
         </div>
         </>
