@@ -104,18 +104,22 @@ export const UserProvider = ({children}) => {
         const goal = goals.find(g => g.id === goalID)
         const filtered = filterRunsByDate(new Date(goal.startDate), new Date())
         console.log("filtered runs for goal progress:", filtered)
-        let goalVal = 0
+        let goalVal = goal.targetMetric === "Pace" ? Infinity : 0
+
+        console.log("Target Metric:", goal.targetMetric)
         filtered.forEach(run => {
             if(goal.targetMetric === "Distance"){
                 goalVal += run.distance
             } else if(goal.targetMetric === "Time"){
                 goalVal += run.time
             } else if(goal.targetMetric === "Pace"){
-                goalVal += run.pace
+                goalVal = (run.pace > goalVal) ? run.pace : goalVal
             }
         })
+        console.log("Goal Value:", goalVal)
+        setGoals(goals.map((g) => g.id === goalID ? {...g, currentValue: goalVal} : g))
 
-        goals.map((g) => g.id === goalID ? {...g, currentValue: goalVal} : g)
+        return goalVal
     }
 
 

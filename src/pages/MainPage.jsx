@@ -29,10 +29,10 @@ function MainPage(){
                 <Goal className="page-button-symbol"/>    
                 <span className={`page-button-caption ${page === "GOALS" ? "active" : ""}`}>Goals</span>  
             </button>  
-            <button className={`page-button ${page === "PROFILE" ? "active" : ""}`} onClick={() => {setPage("PROFILE")}}>
+            {/* <button className={`page-button ${page === "PROFILE" ? "active" : ""}`} onClick={() => {setPage("PROFILE")}}>
                 <UserPen className="page-button-symbol"/>    
                 <span className={`page-button-caption ${page === "PROFILE" ? "active" : ""}`}>Profile</span>  
-            </button>  
+            </button>   */}
         </div>
         </main>
     )

@@ -6,10 +6,45 @@
     border-radius: 1rem;
 
     margin: 0.5rem 0;
+    transition: all 0.3s ease
+}
+
+.goal:hover{
+    border-color: var(--color-primary);
+    background: var(--color-background-slightly-lighter)
+}
+
+.goal-complete-overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.3),
+        rgba(0, 0, 0, 0.805)
+    );
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    font-size: 1.5rem;
+    color: yellowgreen;
+    font-weight: bold;
+    text-shadow: 0 -5px 15px rgba(0, 0, 0, 0.805);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    padding: 1rem;
+}
+.goal:hover .goal-complete-overlay {
+  opacity: 1;
 }
 
 .goal-editing{
-    border-color: var(--color-primary)
+    border-color: var(--color-primary);
 }
 
 .goal-edit-form{
@@ -58,6 +93,14 @@
     border: 2px solid;
     border-color: var(--color-primary);
     border-radius: 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.progress-text{
+    width: 100%;
+    display: inline-block;
 }
 .progress-bar{
     width: 100%;
@@ -67,6 +110,9 @@
     overflow: hidden;
     transition: width 0.2s ease-in-out;
     padding: rem;
+}
+.progress-bar.completed{
+    background-color: var(--color-primary-lighter);
 }
 
 
@@ -88,4 +134,77 @@
     align-items: flex-end;
     text-align: right;
     
+}
+
+.goal-header{
+    display: flex;
+    align-items: center;
+}
+.goal-text{
+    background-color: var(--color-primary-darker);
+    color: var(--color-primary-lighter);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    margin: 0.2rem 0rem;
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    width: auto;
+    width: fit-content;
+    height: fit-content;
+}
+
+.goal-target-date{
+    background-color: var(--color-background-lighter);
+    color: var(--color-text);
+    font-size: 0.9rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 2rem;
+    margin: 0;
+}
+
+.goal-dates{
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 0.4rem;
+}
+
+.goal-start-date{
+    color: var(--color-text-muted);
+}
+
+.goal-title{
+    display: flex;
+    align-items: center;
+
+    gap: 0.5rem;
+}
+
+.goal-completed{
+    background-color: #2d3a18;
+}
+.goal-completed:hover{
+    background-color: #3d4e21;
+    filter: brightness(1);
+}
+
+.goal-complete-text{
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    margin: 0.2rem 0rem;
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    width: auto;
+    width: fit-content;
+    height: fit-content;
 }

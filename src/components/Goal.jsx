@@ -2,19 +2,22 @@ import {useState, useEffect} from "react";
 import {useUserContext} from "../contexts/UserContext";
 import '../css/Goal.css'
 
+import {MountainSnow, Timer, Clock, Sparkle} from 'lucide-react';
+
 function Goal({goal, isEditing, onConfirm, onCancel}){
-    const {goals, addGoal, removeGoal, sortGoalsByDate, setGoalProgress} = useUserContext()
+    const {runs, goals, addGoal, removeGoal, sortGoalsByDate, setGoalProgress, formatTimeString} = useUserContext()
     const [targetMetric, setTargetMetric] = useState(goal ? goal.targetMetric : "Distance")
     const [targetValue, setTargetValue] = useState(goal ? goal.targetValue : 0)
     const [targetDate, setTargetDate] = useState(goal ? goal.targetDate : "")
     
     const [isValidForm, setIsValidForm] = useState(true)
 
+    const [currentVal, setCurrentVal] = useState(goal ? goal.currentValue : 0)
     useEffect(() => {
         // ============== Init ================
         if(!goal){return}
-        setGoalProgress(goal.id)
-    }, [])
+        setCurrentVal(setGoalProgress(goal.id))
+    }, [runs])
         
     useEffect(() => {
         if(!isValidForm && (targetValue <= 0 || !targetDate || new Date(targetDate) < new Date())){
@@ -62,12 +65,58 @@ function Goal({goal, isEditing, onConfirm, onCancel}){
             isCompleted: false
         }
         addGoal(newGoal)
+        sortGoalsByDate();
         onConfirm();
+    }
+
+    function formatValue(value){
+        if(targetMetric === "Distance"){
+            return parseFloat(value).toFixed(2)
+        } else if(targetMetric === "Time" || targetMetric === "Pace"){
+            return formatTimeString(value)
+        }
+    }
+
+
+    function getOrdinal(day) {
+        if (day > 3 && day < 21) return 'th'; // 11th-13th are all "th"
+        switch (day % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+        }
+    }
+
+    function formatDate(date){
+        const day = date.getDate();
+        const month = date.toLocaleDateString('en-GB', {month: 'long'})
+        return `${day}${getOrdinal(day)} ${month}`
+    }
+
+    let progress = 0;
+    let completed = false
+    if(goal != null){
+        progress = Math.min((currentVal / goal.targetValue) * 100, 100)
+        if(progress >= 100){
+            completed = true;
+        }
+    }
+
+    function handleCompleteGoal(){
+        if(completed){
+            removeGoal(goal.id);
+        }
     }
     return (
         <>
-            <div className={`goal ${isEditing ? "goal-editing" : ""}`}>
-                
+            <div 
+            className={`goal ${isEditing ? "goal-editing" : ""} ${completed ? "goal-completed" : ""}`} 
+            onClick={handleCompleteGoal}>
+                {completed && 
+                <div className="goal-complete-overlay">
+                    <span>Click anywhere to remove</span>
+                </div>}
                 {isEditing ? (
                     <div className="goal-edit-form">
                         <h2>Add new Goal</h2>
@@ -128,21 +177,41 @@ function Goal({goal, isEditing, onConfirm, onCancel}){
                 ) : (
                     // Displaying the actual goal info here
                     <div className="goal-display">
-                        <h3>{`Goal: ${goal.targetMetric}`}</h3>
+                        <div className="goal-header">
+                            <div className="goal-title">
+                                <h3 className="goal-text">{getGoalIcon(goal.targetMetric)}{`Goal: ${goal.targetMetric}`}</h3>
+                                {completed && <h3 className="goal-complete-text"><Sparkle/>Goal Complete</h3>}
+                            </div>
 
+                            <div className="goal-dates">
+                                <h4 className="goal-target-date">{`Target Date: ${formatDate(new Date(goal.endDate))}`}</h4>
+                                <span className="goal-start-date">{`Started on: ${formatDate(new Date(goal.startDate))}`}</span>
+                            </div>
+                        </div>
                         <div className="goal-stat-container">
-                            <span className="big-num">{goal.currentValue}</span>
-                            <span className="unit">{`/${goal.targetValue}`}</span>
+                            <span className="big-num">{formatValue(currentVal)}</span>
+                            <span className="unit">{`/${formatValue(goal.targetValue)} ${targetMetric === 'Distance' ? "km" : ''}`}</span>
                         </div>
                         <div className="progress">
-                            <div className="progress-bar" style={{width: `${(goal.currentValue / goal.targetValue) * 100}%`}}></div>
-                            <span>{`Progress: ${goal.currentValue} / ${goal.targetValue}`}</span>
+                            <div className={`progress-bar ${progress >= 100 ? 'completed' : ''}`} style={{width: `${progress}%`}}></div>
                         </div>
+                        <span className="progress-text">{`Progress: ${Math.round(progress)}%`}</span>
                     </div>
                 )}
             </div>
         </>
     )
+}
+
+function getGoalIcon(metric){
+    switch(metric){
+        case "Distance":
+            return <MountainSnow/>
+        case "Time":
+            return <Clock/>
+        case "Pace":
+            return <Timer/>
+    }
 }
 
 export default Goal
